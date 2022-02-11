@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: debezium
+  labels:
+    app: debezium
+  namespace: debezium
+data:
+  application.properties: |-
+      debezium.sink.type=pubsub
+      debezium.sink.pubsub.project.id=acko-poc
+      debezium.sink.pubsub.ordering.enabled=true
+      debezium.source.connector.class=io.debezium.connector.postgresql.PostgresConnector
+      debezium.source.offset.storage.file.filename=data/offsets.dat
+      debezium.source.offset.flush.interval.ms=0
+      debezium.source.database.hostname=localhost #as we are connecting via Cloud Proxy
+      debezium.source.database.port= <Postgres Port> #generally 5432
+      debezium.source.database.user= <user created> # in our case - debezium_user 
+      debezium.source.database.password=<password while creating new user> #in our case "admin"
+      debezium.source.database.dbname=<Database> #OurCase postgres
+      debezium.source.database.server.name=<Database Server name> #In Our Case debezium-db
+      debezium.source.table.include.list=public.actor #Table which needs to captured
+      debezium.source.plugin.name=pgoutput
